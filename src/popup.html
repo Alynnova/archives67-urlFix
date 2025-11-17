@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Archives67 Extension</title>
+<style>
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: #f9f9f9;
+    color: #333;
+    width: 250px;
+  }
+
+  h3 {
+    margin-top: 0;
+    font-size: 18px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+  }
+
+  .section {
+    margin-top: 15px;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+
+  input[type="radio"] {
+    margin-right: 10px;
+  }
+
+  /* Toggle Switch */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    margin-left: 10px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0;
+    right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 24px;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+  }
+
+  input:checked + .slider {
+    background-color: #4caf50;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+
+  .toggle-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+  <h3>Paramètres</h3>
+	<div id="status-box" style="
+	  margin-top: 15px;
+	  padding: 10px;
+	  border-radius: 6px;
+	  background: #eee;
+	  border: 1px solid #ccc;
+	  font-size: 14px;
+	">
+	  <strong>État :</strong>
+	  <div id="ext-status">Chargement...</div>
+	</div>
+
+
+  <div class="section">
+    <div class="toggle-label">
+      <span>Extension active</span>
+      <label class="switch">
+        <input type="checkbox" id="enable-extension">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="section">
+    <span>Mode :</span>
+    <label><input type="radio" name="mode" value="standard"> Télécharger</label>
+    <label><input type="radio" name="mode" value="copy"> Copier dans le presse-papier</label>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
+
