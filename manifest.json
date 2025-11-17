@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Téléchargement / Copier Archives67",
+  "version": "1.0",
+  "description": "Télécharge ou copie les images en plein format depuis archives67.alsace.eu. Le fonctionnement du bouton -Télécharger le document courant- est surchargé",
+  "permissions": ["downloads", "storage", "notifications", "scripting", "activeTab"],
+  "host_permissions": ["https://archives67.alsace.eu/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon-active-16.png",
+      "48": "icons/icon-active-48.png",
+      "128": "icons/icon-active-128.png"
+    }
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://archives67.alsace.eu/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
