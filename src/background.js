@@ -28,6 +28,9 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.set({ enabled: true, mode: "standard" });
 });
 
+// État des liens détectés (mis à jour par case "setIcons")
+let detectionByTab = {};
+
 // Écoute des messages du content-script
 chrome.runtime.onMessage.addListener((message, sender) => {
   switch (message.type) {
@@ -62,23 +65,29 @@ chrome.runtime.onMessage.addListener((message, sender) => {
       // Mise à jour dynamique selon l'état de l'extension et le mode
       chrome.storage.local.get(["enabled", "mode"], (cfg) => {
         updateIcon(message.active && cfg.enabled, cfg.mode, sender.tab?.id);
+		//On alimente le tableau de statut des onglets
+		detectionByTab[sender.tab.id] = message.active;
+
       });
       break;
+	
+	// Demande du statut par la popup
+    case "getStatus":
 
-    case "getStatus":  // Pour la popup
-      chrome.storage.local.get(["enabled", "mode"], (cfg) => {
-        chrome.tabs.sendMessage(sender.tab.id, { type: "checkLinks" }, (response) => {
-          // Si liens détectés sur le site, icône active
-          const detected = response?.found || false;
-          updateIcon(detected && cfg.enabled, cfg.mode, sender.tab?.id);
+		// On récupère l’onglet actif
+		chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+		  const tabId = tabs[0]?.id;
 
-          chrome.runtime.sendMessage({
-            type: "statusResponse",
-            enabled: cfg.enabled,
-            mode: cfg.mode,
-            detected
-          });
-        });
+		  chrome.storage.local.get(["enabled", "mode"], (cfg) => {
+			chrome.runtime.sendMessage({
+			  type: "statusResponse",
+			  enabled: cfg.enabled,
+			  mode: cfg.mode,
+
+			  //  Lire l’état exact DU BON ONGLET
+			  detected: detectionByTab[tabId] || false
+			});
+		  });
       });
       break;
   }
